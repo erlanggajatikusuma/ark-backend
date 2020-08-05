@@ -66,6 +66,17 @@ const products = {
         .catch(err => {
             console.log(err);
         })
+    },
+    deleteProduct : (req, res) => {
+        const id = req.params.id;
+        productModel.deleteProduct(id)
+        .then(result => {
+            deletedProduct = result;
+            res.json(deletedProduct);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 }
 

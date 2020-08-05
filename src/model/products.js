@@ -52,6 +52,17 @@ const products = {
                 }
             } )
         })
+    },
+    deleteProduct : (id) => {
+        return new Promise((resolve, reject) => {
+            connection.query("DELETE FROM product WHERE id = ?", id, (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
     }
 }
 
