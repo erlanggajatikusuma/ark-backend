@@ -46,6 +46,26 @@ const products = {
         .catch(err => {
             console.log(err);
         })
+    },
+    updateProduct : (req, res) => {
+        const id = req.params.id;
+        const {name, price, idCategory, idStatus, image} = req.body;
+        const data = {
+            name,
+            price,
+            idCategory,
+            idStatus,
+            image
+        }
+        productModel.updateProduct(id, data)
+        .then(result => {
+            const updateProduct = result;
+            console.log(result);
+            res.json(updateProduct);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 }
 

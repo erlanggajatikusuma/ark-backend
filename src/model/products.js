@@ -41,6 +41,17 @@ const products = {
                 }
             })
         })
+    },
+    updateProduct : (id, data) => {
+        return new Promise((resolve, reject) => {
+            connection.query("UPDATE product SET ? WHERE id = ?", [data, id], (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            } )
+        })
     }
 }
 

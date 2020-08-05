@@ -10,5 +10,6 @@ router
     .get('/', controller.getAllProduct)
     .get('/:id', controller.getProductById)
     .post('/', controller.insertNewProduct)
+    .patch('/:id', controller.updateProduct)
 
 module.exports = router;
