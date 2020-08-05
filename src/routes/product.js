@@ -9,5 +9,6 @@ const router = express.Router();
 router
     .get('/', controller.getAllProduct)
     .get('/:id', controller.getProductById)
+    .post('/', controller.insertNewProduct)
 
 module.exports = router;

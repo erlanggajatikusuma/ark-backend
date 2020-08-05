@@ -1,5 +1,6 @@
 // model = return data
 // Berhubungan dengan database (query) CRUD;
+// Membuat fungsi
 
 // connect to database
 const connection = require('../config/db');
@@ -21,6 +22,18 @@ const products = {
     getProductById : (id) => {
         return new  Promise((resolve, reject) => {
             connection.query("SELECT * FROM product WHERE id = ?", id, (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
+    },
+    insertNewProduct : (data) => {
+        console.log(data);
+        return new Promise((resolve, reject) => {
+            connection.query("INSERT INTO product SET ?", data, (err, result) => {
                 if(!err) {
                     resolve(result);
                 } else {
