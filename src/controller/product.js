@@ -77,6 +77,17 @@ const products = {
         .catch(err => {
             console.log(err);
         })
+    },
+    searchByName : (req, res) => {
+        const name = req.params.search;
+        productModel.searchByName(name)
+        .then(result => {
+            searchedProduct = result;
+            res.json(searchedProduct);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 }
 
