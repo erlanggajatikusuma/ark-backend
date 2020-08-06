@@ -12,6 +12,5 @@ router
     .post('/', controller.insertNewProduct)
     .patch('/:id', controller.updateProduct)
     .delete('/:id', controller.deleteProduct)
-    .get('/:search', controller.searchByName)
 
 module.exports = router;

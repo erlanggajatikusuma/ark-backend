@@ -63,18 +63,18 @@ const products = {
                 }
             })
         })
-    },
-    searchByName : (name) => {
-        return new Promise((resolve, reject) => {
-            connection.query("SELECT * FROM product WHERE name = ?", name, (err, result) => {
-                if(!err) {
-                    resolve(result);
-                } else {
-                    reject(new Error(err));
-                }
-            })
-        })
     }
+    // searchByName : (name) => {
+    //     return new Promise((resolve, reject) => {
+    //         connection.query("SELECT * FROM product WHERE name = ?", name, (err, result) => {
+    //             if(!err) {
+    //                 resolve(result);
+    //             } else {
+    //                 reject(new Error(err));
+    //             }
+    //         })
+    //     })
+    // }
 }
 
 
