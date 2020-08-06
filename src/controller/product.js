@@ -9,16 +9,20 @@ const productModel = require('../model/products');
 const products = {
     getAllProduct : (req, res) => {
         const search = req.query.search;
-        productModel.getAllProduct()
-        .then(result => {
-            resultProduct = result;
-            // res.send(search);
-            // res.json(resultProduct);
-            res.json(search);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        let result;
+            if(!search) {
+                result = productModel.getAllProduct()
+            } else {
+                result = productModel.searchProductName(search)
+            };
+        result
+            .then(result => {
+                resultProduct = result;
+                res.json(resultProduct);
+                })
+            .catch(err => {
+                console.log(err);
+            })
     },
     getProductById: (req, res) => {
         const id = req.params.id;
@@ -81,19 +85,6 @@ const products = {
             console.log(err);
         })
     }
-    // searchByName : (req, res) => {
-    //     const search = req.query.search;
-    //     console.log(req.query);
-    //     productModel.searchByName(name)
-    //     .then(result => {
-    //         searchProduct = result;
-    //         res.json(search);
-    //         res.json(searchProduct);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     })
-    // }
 }
 
 module.exports = products;

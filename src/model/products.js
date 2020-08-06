@@ -2,7 +2,7 @@
 // Berhubungan dengan database (query) CRUD;
 // Membuat fungsi
 
-// connect to database
+// connect to database 
 const connection = require('../config/db');
 
 
@@ -63,15 +63,22 @@ const products = {
                 }
             })
         })
+    },
+    searchProductName : (name) => {
+        return new Promise ((resolve, reject) => {
+            connection.query("SELECT * FROM product WHERE name = ?", name, (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
     }
-    // searchByName : (name) => {
+    // sortProduct : (sort) => {
     //     return new Promise((resolve, reject) => {
-    //         connection.query("SELECT * FROM product WHERE name = ?", name, (err, result) => {
-    //             if(!err) {
-    //                 resolve(result);
-    //             } else {
-    //                 reject(new Error(err));
-    //             }
+    //         connection.query("SELECT * FROM product ORDER BY price ASC", sort, (err, result) => {
+    //             if(err) throw err
     //         })
     //     })
     // }
