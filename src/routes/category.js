@@ -10,5 +10,7 @@ const router2 = express.Router();
 
 router2
     .get('/', controllerCategory.getCategories)
+    .post('/', controllerCategory.insertCategory)
+    .patch('/:id', controllerCategory.updateCategory)
 
 module.exports = router2;
