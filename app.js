@@ -1,11 +1,16 @@
-// Caller
 // Dont forget to open xampp
+
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const cors = require('cors');
 
-// Connect route
-const productRoute = require('./src/routes/product')
+// Connect ROUTER
+// const productRoute = require('./src/routes/product')
+// const categoryRoute = require('./src/routes/category')
+const routers = require('./src/routes/routers')
 
 
 
@@ -14,9 +19,13 @@ const productRoute = require('./src/routes/product')
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan('dev'));
 
-// Route
-app.use('/product', productRoute);
+// USE ROUTER
+// app.use('/product', productRoute);
+// app.use('/category', categoryRoute);
+app.use('/api/v1', routers);
 
 
 
