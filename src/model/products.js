@@ -74,15 +74,21 @@ const products = {
                 }
             })
         })
+    },
+    sortProduct : (sort) => {
+        return new Promise((resolve, reject) => {
+            connection.query("SELECT * FROM product ORDER BY price ASC", sort, (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
     }
-    // sortProduct : (sort) => {
-    //     return new Promise((resolve, reject) => {
-    //         connection.query("SELECT * FROM product ORDER BY price ASC", sort, (err, result) => {
-    //             if(err) throw err
-    //         })
-    //     })
-    // }
 }
+
+
 
 
 module.exports = products;

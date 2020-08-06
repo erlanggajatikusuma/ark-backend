@@ -1,7 +1,7 @@
 // controller = req and res to develop, logic pengolahan data
 // menampilkan fungsi callback endpoint di route
 // fungi controller diambil dari model
-// pemanggilan fungsi
+// pemanggilan fungsi dari model
 
 // connect to model
 const productModel = require('../model/products');
@@ -9,17 +9,20 @@ const productModel = require('../model/products');
 const products = {
     getAllProduct : (req, res) => {
         const search = req.query.search;
+        const sort = req.query.sort;
         let result;
-            if(!search) {
-                result = productModel.getAllProduct()
+            if(search) {
+                result = productModel.searchProductName(search);
+            } else if(sort) {
+                result = productModel.sortProduct(sort);
             } else {
-                result = productModel.searchProductName(search)
+                result = productModel.getAllProduct();
             };
         result
             .then(result => {
                 resultProduct = result;
                 res.json(resultProduct);
-                })
+            })
             .catch(err => {
                 console.log(err);
             })
@@ -87,4 +90,6 @@ const products = {
     }
 }
 
-module.exports = products;
+
+
+module.exports = products
