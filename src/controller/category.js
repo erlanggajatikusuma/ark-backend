@@ -46,6 +46,17 @@ const categories = {
             .catch(err => {
                 console.log(err);
             })
+    },
+    deleteCategory : (req, res) => {
+        const id = req.params.id;
+        categoryModel.deleteCategory(id)
+            .then(result => {
+                const deleted = result;
+                res.json(deleted);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 }
 

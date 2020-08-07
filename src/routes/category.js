@@ -12,5 +12,6 @@ router2
     .get('/', controllerCategory.getCategories)
     .post('/', controllerCategory.insertCategory)
     .patch('/:id', controllerCategory.updateCategory)
+    .delete('/:id', controllerCategory.deleteCategory)
 
 module.exports = router2;

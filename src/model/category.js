@@ -38,6 +38,17 @@ const categories = {
                 }
             })
         })
+    },
+    deleteCategory : (id) => {
+        return new Promise((resolve, reject) => {
+            connection.query("DELETE FROM category WHERE id = ?", id, (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
     }
 }
 
