@@ -5,18 +5,22 @@
 
 // connect to model
 const productModel = require('../model/products');
+const responder = require('../response/res');
 
 const products = {
     getAllProduct : (req, res) => {
         const search = req.query.search;
         const sort = req.query.sort;
+        const page = req.query.page;
+        const limit = req.query.limit;
+        
         let result;
             if(search) {
                 result = productModel.searchProductName(search);
             } else if(sort) {
                 result = productModel.sortProduct(sort);
             } else {
-                result = productModel.getAllProduct();
+                result = productModel.getAllProduct(page, limit);
             };
         result
             .then(result => {
@@ -32,10 +36,11 @@ const products = {
         productModel.getProductById(id)
         .then(result => {
             resultProduct = result;
-            res.json(resultProduct);
+            responder.response(res, resultProduct, 200, null)
+            // res.json(resultProduct)
         })
         .catch(err => {
-            console.log(err);
+                console.log(err);
         })
     },
     insertNewProduct : (req, res) => {

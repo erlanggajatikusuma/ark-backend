@@ -8,9 +8,9 @@ const connection = require('../config/db');
 
 
 const products = {
-    getAllProduct : () => {
+    getAllProduct : (page, limit) => {
         return new Promise ((resolve, reject) => {
-            connection.query("SELECT * FROM product", (err, result) => {
+            connection.query(`SELECT * FROM product LIMIT ${limit} OFFSET ${(page - 1) * limit}`, (err, result) => {
                 if(!err) {
                     resolve(result);
                 } else {
