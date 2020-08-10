@@ -1,10 +1,22 @@
 module.exports = {
-  response: (res, result, status, err) => {
+  response: (res, result, status, message, err) => {
     const output = {}
-    output.status = 'success',
+    if (message) {
+      output.message = message
+    }
+    if (err) {
+      output.err = err || null
+    }
+    // output.status = !err //'success',
+    // output.success = !err,
     output.statusCode = status,
-    output.result = result,
-    output.err = err || null
-    return res.status(output.statusCode).json(output)
+    output.result = result
+    return res.status(status).json(output)
+  },
+  status: {
+    found: 'Data found',
+    insert: 'Data successfully added',
+    update: 'Data successfully updated',
+    delete: 'Data successfully deleted'
   }
 }

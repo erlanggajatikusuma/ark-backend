@@ -19,7 +19,9 @@ const products = {
   },
   getProductById: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM product WHERE id = ?', id, (err, result) => {
+    //   const sql = 'SELECT * FROM product WHERE id = ?';
+      const sql2 = 'SELECT product.*, category.category FROM product INNER JOIN category ON product.idCategory = category.id WHERE product.id = ?'
+      connection.query(sql2, id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {

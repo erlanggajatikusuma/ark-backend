@@ -25,34 +25,25 @@ const products = {
     result
       .then(result => {
         const resultProduct = result
-        responder.response(res, resultProduct, 200, null)
-        // res.json(resultProduct);
+        responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
       })
       .catch(err => {
         console.log(err)
       })
   },
-  // getProductById: (req, res) => {
-  //     const id = req.params.id;
-  //     productModel.getProductById(id)
-  //     .then(result => {
-  //         resultProduct = result;
-  //         // responder.response(res, resultProduct, 200, null)
-  //         res.json(resultProduct)
-  //     })
-  //     .catch(err => {
-  //             err.message;
-  //     })
-  // },
-  getProductById: (req, res, next) => {
+  getProductById: (req, res) => {
     const id = req.params.id
     productModel.getProductById(id)
       .then((result) => {
         const resultProduct = result
-        responder.response(res, resultProduct, 200, null)
-        // res.json(resultProduct)
+        if (resultProduct.length === 0) {
+          return responder.response(res, resultProduct, 404, 'Data not found')
+        }
+        responder.response(res, resultProduct, res.statusCode, responder.status.found)
       })
-      .catch(next)
+      .catch(err => {
+        responder.response(res, [], err.statusCode, null, err)
+      })
   },
   insertNewProduct: (req, res) => {
     const { name, price, idCategory, idStatus, image } = req.body
@@ -65,9 +56,9 @@ const products = {
     }
     productModel.insertNewProduct(data)
       .then(result => {
-        const resultNewProduct = result
-        console.log(result)
-        res.json(resultNewProduct)
+        const insertedProduct = result
+        console.log(result);
+        responder.response(res, insertedProduct, res.statusCode, responder.status.insert)
       })
       .catch(err => {
         console.log(err)
@@ -85,9 +76,12 @@ const products = {
     }
     productModel.updateProduct(id, data)
       .then(result => {
-        const updateProduct = result
+        const updatedProduct = result
         console.log(result)
-        res.json(updateProduct)
+        if (updatedProduct.insertId === 0) {
+          return responder.response(res, null, 404, 'Id Not Found')
+        }
+        responder.response(res, updatedProduct, res.statusCode, responder.status.update)
       })
       .catch(err => {
         console.log(err)
@@ -98,7 +92,11 @@ const products = {
     productModel.deleteProduct(id)
       .then(result => {
         const deletedProduct = result
-        res.json(deletedProduct)
+        console.log(deletedProduct);
+        if (deletedProduct.insertId === 0) {
+          return responder.response(res, null, 404, 'Id Not Found')
+        }
+        responder.response(res, deletedProduct, res.statusCode, responder.status.delete)
       })
       .catch(err => {
         console.log(err)
