@@ -25,6 +25,30 @@ const history = {
                 }
             })
         })
+    },
+    updateHistory : (id, data) => {
+        return new Promise((resolve, reject) => {
+            const sql = ("UPDATE history SET ? WHERE id = ?")
+            connection.query(sql, [data, id], (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
+    },
+    deleteHistory : (id) => {
+        return new Promise((resolve, reject) => {
+            const sql = ("DELETE FROM product WHERE id = ?");
+            connection.query(sql, id, (err, result) => {
+                if(!err) {
+                    resolve(result);
+                } else {
+                    reject(new Error(err));
+                }
+            })
+        })
     }
 }
 

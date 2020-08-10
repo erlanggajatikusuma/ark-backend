@@ -28,6 +28,35 @@ const history = {
             .catch(err => {
                 console.log(err);
             })
+    },
+    updateHistory : (req, res) => {
+        const idi = req.params.id;
+        const {id, income, orders, day} = req.body;
+        const data = {
+            id,
+            income,
+            orders,
+            day
+        }
+        historyModel.updateHistory(idi, data)
+            .then(result => {
+                updated = result;
+                res.json(updated);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    },
+    deleteHistory : (req, res) => {
+        const id = req.params.id;
+        historyModel.deleteHistory(id)
+            .then(result => {
+                deleted = result;
+                res.json(deleted);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 }
 

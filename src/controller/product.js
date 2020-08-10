@@ -31,17 +31,26 @@ const products = {
                 console.log(err);
             })
     },
-    getProductById: (req, res) => {
+    // getProductById: (req, res) => {
+    //     const id = req.params.id;
+    //     productModel.getProductById(id)
+    //     .then(result => {
+    //         resultProduct = result;
+    //         // responder.response(res, resultProduct, 200, null)
+    //         res.json(resultProduct)
+    //     })
+    //     .catch(err => {
+    //             err.message;
+    //     })
+    // },
+    getProductById: (req, res, next) => {
         const id = req.params.id;
         productModel.getProductById(id)
-        .then(result => {
-            resultProduct = result;
-            responder.response(res, resultProduct, 200, null)
-            // res.json(resultProduct)
+        .then((result) => {
+                resultProduct = result;
+                res.json(resultProduct)
         })
-        .catch(err => {
-                console.log(err);
-        })
+        .catch(next)
     },
     insertNewProduct : (req, res) => {
         const {name, price, idCategory, idStatus, image} = req.body;

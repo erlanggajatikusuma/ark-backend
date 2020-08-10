@@ -9,8 +9,8 @@ const router3 = express.Router();
     router3
         .get('/', controllerHistory.getHistories)
         .post('/', controllerHistory.insertHistory)
-        // .patch('/:id', controllerHistory.updateHistory)
-        // .delete('/:id', controllerHistory.deleteHistory)
+        .patch('/:id', controllerHistory.updateHistory)
+        .delete('/:id', controllerHistory.deleteHistory)
 
 
 module.exports = router3;
