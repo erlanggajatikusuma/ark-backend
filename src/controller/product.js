@@ -11,25 +11,37 @@ const products = {
   getAllProduct: (req, res) => {
     const search = req.query.search
     const sort = req.query.sort
-    const page = req.query.page
-    const limit = req.query.limit
+    const page = parseInt(req.query.page) || 1
+    const limit = req.query.limit || 9
 
-    let result
     if (search) {
-      result = productModel.searchProductName(search)
+      productModel.searchProductName(search)
+            .then(result => {
+                  const resultProduct = result
+                  return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
+                })
     } else if (sort) {
-      result = productModel.sortProduct(sort)
+      productModel.sortProduct(sort)
+            .then(result => {
+              const resultProduct = result
+              return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
+            })
     } else {
-      result = productModel.getAllProduct(page, limit)
-    };
-    result
-      .then(result => {
-        const resultProduct = result
-        responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      productModel.getAllProduct(page, limit)
+                  .then(result => {
+                    const resultProducts = {
+                      prevPage: page - 1,
+                      currentPage: page,
+                      nextPage: page + 1,
+                      perPage: limit,
+                      products: result
+                    }
+                    responder.response(res, resultProducts, 200, responder.status.found, null)
+                  })
+                  .catch(err => {
+                    console.log(err)
+                  })
+    }
   },
   getProductById: (req, res) => {
     const id = req.params.id
@@ -93,7 +105,7 @@ const products = {
       .then(result => {
         const deletedProduct = result
         console.log(deletedProduct);
-        if (deletedProduct.insertId === 0) {
+        if (deletedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')
         }
         responder.response(res, deletedProduct, res.statusCode, responder.status.delete)
