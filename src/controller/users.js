@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const modelUser = require('../model/users')
 const helper = require('../response/res')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     register: (req, res) => {
@@ -30,16 +31,29 @@ module.exports = {
         const {email, password} = req.body;
         modelUser.getUserEmail(email)
             .then(result => {
+                if(result.length < 1) return helper.response(res, {message: 'Email not Found !!!'}, 404, null)
+
                 const user = result[0]
                 console.log(user)
                 const hash = user.password
                 bcrypt.compare(password, hash)
                     .then((output) => {
                         if(!output) return helper.response(res, {message: 'Wrong Password !!!'}, 401, 'wrong password')
-                        delete user.password
-                        delete user.createdAt
-                        delete user.updatedAt
-                        helper.response(res, user, 200, null)
+                        
+                        // JWT
+                        const payload = {
+                            id : user.id,
+                            email: user.email,
+                            roleId: user.roleId
+                        }
+                        jwt.sign(payload, process.env.KEY_TOKEN, { expiresIn: '1h' }, (err, token) => {
+                            user.token = token
+                            
+                            delete user.password
+                            delete user.createdAt
+                            delete user.updatedAt
+                            helper.response(res, user, 200, null)
+                        });
                     });
             })
             .catch(err => {
