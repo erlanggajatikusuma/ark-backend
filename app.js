@@ -20,13 +20,13 @@ app.use(morgan('dev'))
 // USE ROUTER
 app.use('/api/v1', routers)
 
-// Error handling middleware
+// Error handling middleware  (PR)
 // Work
-app.use((req, res, next) => {
-  const error = new Error('Not Found!')
-  error.status = 404
-  next(error)
-})
+// app.use((req, res, next) => {
+//   const error = new Error('Not Found!')
+//   error.status = 404
+//   next(error)
+// })
 
 app.use((error, req, res, next) => {
   res.status(error.status || 500)
@@ -36,6 +36,9 @@ app.use((error, req, res, next) => {
     }
   })
 })
+
+// Static
+app.use('/uploads', express.static('./uploads'))
 
 const port = 3000
 app.listen(port, () => { console.log(`server is running on ${port}`) })

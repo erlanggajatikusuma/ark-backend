@@ -58,13 +58,14 @@ const products = {
       })
   },
   insertNewProduct: (req, res) => {
-    const { name, price, idCategory, idStatus, image } = req.body
+    console.log(req.file)
+    const { name, price, idCategory, idStatus } = req.body
     const data = {
       name,
       price,
       idCategory,
       idStatus,
-      image
+      image: `http://localhost:3000/uploads/${req.file.filename}`
     }
     productModel.insertNewProduct(data)
       .then(result => {
