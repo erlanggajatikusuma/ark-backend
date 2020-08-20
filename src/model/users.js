@@ -24,25 +24,11 @@ module.exports = {
                 }
             })
         })
-    }
+    },
+    // checkEmail: (email) => {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = 'SELECT * FROM users WHERE email = ?'
+    //     })
+    // }
     
 } 
-
-
-// searchProductName: (name) => {
-//     return new Promise((resolve, reject) => {
-//       connection.query('SELECT * FROM product WHERE name LIKE ?', `%${name}%`, (err, result) => {
-//         if (!err) {
-//           resolve(result)
-//         } else {
-//           reject(new Error(err))
-//         }
-//       })
-//     })
-
-// checkEmail: (email) => {
-//     return new Promise((resolve, reject) = {
-//         const sql = 'SELECT * FROM users WHERE email LIKE ?',
-//         connection.query(sql, email)
-//     })
-// }

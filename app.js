@@ -8,8 +8,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 // Connect ROUTER
-// const productRoute = require('./src/routes/product')
-// const categoryRoute = require('./src/routes/category')
 const routers = require('./src/routes/routers')
 
 // use module
@@ -20,8 +18,6 @@ app.use(cors())
 app.use(morgan('dev'))
 
 // USE ROUTER
-// app.use('/product', productRoute);
-// app.use('/category', categoryRoute);
 app.use('/api/v1', routers)
 
 // Error handling middleware
