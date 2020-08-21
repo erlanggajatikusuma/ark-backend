@@ -5,7 +5,16 @@ const helper = require('../response/res')
 module.exports = {
     cache: (req, res, next) => {
         client.get('allproducts', (err, data) => {
-            console.log(data)
+            if(err) throw err
+            if(data !== null) {
+                helper.response(res, JSON.parse(data), 200, 'OK', null)
+            } else {
+                next()
+            }
+        })
+    },
+    cacheProductId: (req, res, next) => {
+        client.get('product', (err, data) => {
             if(err) throw err
             if(data !== null) {
                 helper.response(res, JSON.parse(data), 200, 'OK', null)

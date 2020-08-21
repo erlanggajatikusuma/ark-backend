@@ -55,6 +55,7 @@ const products = {
         if (resultProduct.length === 0) {
           return responder.response(res, resultProduct, 404, 'Data not found')
         }
+        client.setex('product', 60*60*6, JSON.stringify(resultProduct))
         responder.response(res, resultProduct, res.statusCode, responder.status.found)
       })
       .catch(err => {
