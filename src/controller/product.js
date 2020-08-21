@@ -6,6 +6,9 @@
 // connect to model
 const productModel = require('../model/products')
 const responder = require('../response/res')
+const redis = require('redis');
+const client = redis.createClient(process.env.REDIS_PORT);
+
 
 const products = {
   getAllProduct: (req, res) => {
@@ -36,6 +39,7 @@ const products = {
                       perPage: limit,
                       products: result
                     }
+                    client.setex('allproducts',60*60*6, JSON.stringify(resultProducts.products))
                     responder.response(res, resultProducts, 200, responder.status.found, null)
                   })
                   .catch(err => {
