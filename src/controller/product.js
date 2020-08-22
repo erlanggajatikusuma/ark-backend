@@ -78,7 +78,7 @@ const products = {
       .then(result => {
         const updatedProduct = result
         console.log(result)
-        if (updatedProduct.insertId === 0) {
+        if (updatedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')
         }
         responder.response(res, updatedProduct, res.statusCode, responder.status.update)
