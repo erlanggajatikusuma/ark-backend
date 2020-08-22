@@ -93,7 +93,7 @@ const products = {
       .then(result => {
         const deletedProduct = result
         console.log(deletedProduct);
-        if (deletedProduct.insertId === 0) {
+        if (deletedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')
         }
         responder.response(res, deletedProduct, res.statusCode, responder.status.delete)
