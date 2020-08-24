@@ -10,7 +10,7 @@ const multer = require('../middlewares/multer')
 // route endpoints
 router
   .get('/', auth.verifyAccess, controller.getAllProduct)
-  .get('/:id', controller.getProductById)
+  .get('/:id',auth.verifyAccess, controller.getProductById)
   .post('/',auth.verifyAccess, auth.isAdmin, multer.upload.single('image'), controller.insertNewProduct)
   .patch('/:id',auth.verifyAccess, auth.isAdmin, multer.upload.single('image'), controller.updateProduct)
   .delete('/:id',auth.verifyAccess, auth.isAdmin, controller.deleteProduct)
