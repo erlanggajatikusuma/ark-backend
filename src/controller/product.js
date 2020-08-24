@@ -7,7 +7,7 @@
 const productModel = require('../model/products')
 const responder = require('../response/res')
 const redis = require('redis');
-const client = redis.createClient(process.env.REDIS_PORT);
+// const client = redis.createClient(process.env.REDIS_PORT);
 
 
 const products = {
@@ -39,7 +39,7 @@ const products = {
                       perPage: limit,
                       products: result
                     }
-                    client.setex('allproducts',60*60*6, JSON.stringify(resultProducts))
+                    // client.setex('allproducts',60*60*6, JSON.stringify(resultProducts))
                     responder.response(res, resultProducts, 200, responder.status.found, null)
                   })
                   .catch(err => {
@@ -83,6 +83,7 @@ const products = {
       })
   },
   updateProduct: (req, res) => {
+    console.log(req.file)
     const id = req.params.id
     const { name, price, idCategory, idStatus, image } = req.body
     const data = {
@@ -90,7 +91,7 @@ const products = {
       price,
       idCategory,
       idStatus,
-      image
+      image: `http://localhost:3000/uploads/${req.file.filename}`
     }
     productModel.updateProduct(id, data)
       .then(result => {
