@@ -6,8 +6,9 @@ module.exports = {
     cache: (req, res, next) => {
         client.get('allproducts', (err, data) => {
             if(err) throw err
+            const dataArr = JSON.parse(data)
             if(data !== null) {
-                helper.response(res, JSON.parse(data), 200, 'OK', null)
+                helper.response(res, dataArr, 200, helper.status.found, dataArr[0])
             } else {
                 next()
             }
@@ -24,7 +25,7 @@ module.exports = {
         })
     },
     clearCache: (req, res, next) => {
-        client.del('allproduct')
+        client.del('allproducts')
         next()
     }
 }

@@ -39,7 +39,7 @@ const products = {
                       perPage: limit,
                       products: result
                     }
-                    client.setex('allproducts',60*60*6, JSON.stringify(resultProducts.products))
+                    client.setex('allproducts',60*60*6, JSON.stringify(resultProducts))
                     responder.response(res, resultProducts, 200, responder.status.found, null)
                   })
                   .catch(err => {
@@ -96,7 +96,7 @@ const products = {
       .then(result => {
         const updatedProduct = result
         console.log(result)
-        if (updatedProduct.insertId === 0) {
+        if (updatedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')
         }
         responder.response(res, updatedProduct, res.statusCode, responder.status.update)
