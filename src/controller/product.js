@@ -6,7 +6,8 @@
 // connect to model
 const productModel = require('../model/products')
 const responder = require('../response/res')
-const redis = require('redis');
+const fs = require('fs')
+// const redis = require('redis');
 // const client = redis.createClient(process.env.REDIS_PORT);
 
 
@@ -111,6 +112,13 @@ const products = {
     productModel.deleteProduct(id)
       .then(result => {
         const deletedProduct = result
+        console.log(req.file)
+        // Delete file system
+        // const deletePath = `http://localhost:3000/${img}`
+        // fs.unlinkSync(deletePath, function(err){
+        //   if(err) return console.log(err);
+        //   console.log('file deleted successfully');
+        // });
         console.log(deletedProduct);
         if (deletedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')
