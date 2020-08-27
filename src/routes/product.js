@@ -15,4 +15,11 @@ router
   .patch('/:id',auth.verifyAccess, auth.isAdmin, multer.upload.single('image'), controller.updateProduct)
   .delete('/:id',auth.verifyAccess, auth.isAdmin, controller.deleteProduct)
 
+  // router
+  // .get('/', controller.getAllProduct)
+  // .get('/:id',controller.getProductById)
+  // .post('/',auth.isAdmin, multer.upload.single('image'), controller.insertNewProduct)
+  // .patch('/:id',auth.isAdmin, multer.upload.single('image'), controller.updateProduct)
+  // .delete('/:id',auth.isAdmin, controller.deleteProduct)
+
 module.exports = router
