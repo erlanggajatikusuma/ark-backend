@@ -11,8 +11,8 @@ const products = {
   getAllProduct: (req, res) => {
     const search = req.query.search
     const sort = req.query.sort
-    const page = req.query.page
-    const limit = req.query.limit
+    const page = req.query.page || 1
+    const limit = req.query.limit || 9
 
     let result
     if (search) {
