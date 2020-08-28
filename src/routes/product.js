@@ -7,7 +7,7 @@ const multer = require('../middlewares/multer')
 // const {cache, clearCache, cacheProductId} = require('../middlewares/redis')
 
 
-// route endpoints
+// // route endpoints
 router
   .get('/', auth.verifyAccess, controller.getAllProduct)
   .get('/:id',auth.verifyAccess, controller.getProductById)
@@ -18,8 +18,9 @@ router
   // router
   // .get('/', controller.getAllProduct)
   // .get('/:id',controller.getProductById)
-  // .post('/',auth.isAdmin, multer.upload.single('image'), controller.insertNewProduct)
-  // .patch('/:id',auth.isAdmin, multer.upload.single('image'), controller.updateProduct)
-  // .delete('/:id',auth.isAdmin, controller.deleteProduct)
+  // .post('/', multer.upload.single('image'), controller.insertNewProduct)
+  // .patch('/:id', multer.upload.single('image'), controller.updateProduct)
+  // .delete('/:id', controller.deleteProduct)
+
 
 module.exports = router
