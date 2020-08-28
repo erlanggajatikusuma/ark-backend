@@ -31,7 +31,8 @@ module.exports = {
         const {firstName, lastName, email, password} = req.body;
         modelUser.emailExist(email)
             .then(result => {
-                if(result.length > 0) return helper.response(res,{message: 'email already registered'}, 409, null)
+                // console.log(result[0].emailRegistered)
+                if(result[0].emailRegistered > 0) return helper.response(res,{message: 'email already registered'}, 409, null)
                 const data = {
                     firstName,
                     lastName,
