@@ -92,7 +92,7 @@ const products = {
       price,
       idCategory,
       idStatus,
-      image: `http://localhost:3000/uploads/${req.file.filename}`
+      image: `http://localhost:3000/uploads/${req.file.filename}` || null
     }
     productModel.updateProduct(id, data)
       .then(result => {

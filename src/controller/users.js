@@ -4,29 +4,6 @@ const helper = require('../response/res')
 const jwt = require('jsonwebtoken')
 
 module.exports = {
-    // register: (req, res) => {
-    //     const {firstName, lastName, email, password} = req.body;
-    //     const data = {
-    //         firstName,
-    //         lastName,
-    //         email,
-    //         password,
-    //         roleId: 2
-    //     }
-    //     bcrypt.genSalt(10, function(err, salt) {
-    //         bcrypt.hash(data.password, salt, function(err, hash) {
-    //             data.password = hash;
-    //             modelUser.register(data)
-    //                 .then(result => {
-    //                     const resultData = result;
-    //                     helper.response(res, resultData, 201, helper.status.insert)
-    //                 })
-    //                 .catch(err => {
-    //                     console.log(err)
-    //                 })
-    //         });
-    //     });
-    // },
     register: (req, res) => {
         const {firstName, lastName, email, password} = req.body;
         modelUser.emailExist(email)
@@ -62,7 +39,7 @@ module.exports = {
         const {email, password} = req.body;
         modelUser.getUserEmail(email)
             .then(result => {
-                if(result.length < 1) return helper.response(res, {message: 'Email not Found !!!'}, 404, null)
+                if(result.length < 1) return helper.response(res, {message: 'User does not exist !!!'}, 404, null)
 
                 const user = result[0]
                 console.log(user)
