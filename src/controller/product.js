@@ -109,16 +109,23 @@ const products = {
   },
   deleteProduct: (req, res) => {
     const id = req.params.id
+    productModel.getProductById(id)
+      .then(result => {
+        const resultProduct = result[0].image
+        console.log(resultProduct)
+        // Delete file system
+        const port = 'http://localhost:3000/'
+        const deletePath = resultProduct.replace(port, '')
+        fs.unlinkSync(deletePath, function(err){
+          if(err) throw err
+          console.log('file deleted successfully');
+        });
+      })
     productModel.deleteProduct(id)
       .then(result => {
         const deletedProduct = result
-        console.log(req.file)
-        // Delete file system
-        // const deletePath = `http://localhost:3000/${img}`
-        // fs.unlinkSync(deletePath, function(err){
-        //   if(err) return console.log(err);
-        //   console.log('file deleted successfully');
-        // });
+        // console.log(req.file)
+        
         console.log(deletedProduct);
         if (deletedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')
