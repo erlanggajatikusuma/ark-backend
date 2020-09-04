@@ -67,5 +67,59 @@ module.exports = {
             .catch(err => {
                 console.log(err)
             })
+    },
+    getAllUser: (req, res) => {
+        modelUser.getAllUser()
+            .then(result => {
+                console.log(result)
+                return helper.response(res, result, res.statusCode, helper.status.found)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    updateUser: (req, res) => {
+        const id = req.params.id
+        const { firstName, lastName, roleId, email } = req.body
+        const data = {
+            firstName,
+            lastName,
+            roleId,
+            email
+        }
+        modelUser.updateUser(id, data)
+            .then(result => {
+                console.log(result)
+                if (result.affectedRows === 0) {
+                return helper.response(res, null, 404, 'Id Not Found')
+            }
+            helper.response(res, result, res.statusCode, helper.status.update)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    },
+    deleteUser: (req, res) => {
+        const id = req.params.id;
+        modelUser.deleteUser(id)
+            .then(result => {
+                console.log(result)
+                if (result.affectedRows === 0) {
+                    return helper.response(res, null, 404, 'Id Not Found')
+                }
+                helper.response(res, result, res.statusCode, helper.status.delete)
+            })
+    },
+    getUserById: (req, res) => {
+        const id = req.params.id;
+        modelUser.getUserById(id)
+            .then(result => {
+                console.log(result)
+                const byId = result
+                if (byId.length === 0) {
+                    return helper.response(res, byId, 404, 'User not Found')
+                }
+                helper.response(res, byId, res.statusCode, helper.status.found)
+            })
     }
 }
