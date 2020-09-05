@@ -1,5 +1,6 @@
 // CONNECT TO MODEL
 const historyModel = require('../model/history')
+const helper = require('../response/res')
 
 const history = {
   getHistories: (req, res) => {
@@ -13,35 +14,40 @@ const history = {
       })
   },
   insertHistory: (req, res) => {
-    const { id, income, orders } = req.body
+    const { cashier, invoice, orders, amount } = req.body
     const data = {
-      id,
-      income,
-      orders
+      cashier,
+      invoice,
+      orders,
+      amount
     }
     historyModel.insertHistory(data)
       .then(result => {
-        inserted = result
+        const inserted = result
+        helper.response(res, inserted, res.statusCode, helper.status.insert)
         console.log(result)
-        res.json(inserted)
       })
       .catch(err => {
         console.log(err)
       })
   },
   updateHistory: (req, res) => {
-    const idi = req.params.id
-    const { id, income, orders, day } = req.body
+    const id = req.params.id
+    const { cashier, invoice, orders, amount } = req.body
     const data = {
-      id,
-      income,
+      cashier,
+      invoice,
       orders,
-      day
+      amount
     }
-    historyModel.updateHistory(idi, data)
+    historyModel.updateHistory(id, data)
       .then(result => {
-        updated = result
-        res.json(updated)
+        const updated = result
+        console.log(updated)
+        if (updated.affectedRows === 0) {
+          helper.response(res, null, 404, 'Id Not Found')
+        }
+        helper.response(res, updated, res.statusCode, helper.status.update)
       })
       .catch(err => {
         console.log(err)
@@ -51,8 +57,12 @@ const history = {
     const id = req.params.id
     historyModel.deleteHistory(id)
       .then(result => {
-        deleted = result
-        res.json(deleted)
+        const deleted = result
+        console.log(deleted)
+        if (deleted.affectedRows === 0) {
+          helper.response(res, null, 404, 'Id Not Found')
+        }
+        helper.response(res, deleted, res.statusCode, helper.status.delete)
       })
       .catch(err => {
         console.log(err)
