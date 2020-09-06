@@ -6,8 +6,8 @@ const history = {
   getHistories: (req, res) => {
     historyModel.getHistories()
       .then(result => {
-        obtained = result
-        res.json(obtained)
+        const output = result
+        helper.response(res, output, res.statusCode, helper.status.found )
       })
       .catch(err => {
         console.log(err)

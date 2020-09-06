@@ -86,14 +86,15 @@ const products = {
   updateProduct: (req, res) => {
     console.log(req.file)
     const id = req.params.id
-    const { name, price, idCategory, idStatus, image } = req.body
-    const data = {
-      name,
-      price,
-      idCategory,
-      idStatus,
-      image: `http://localhost:3000/uploads/${req.file.filename}` || null
-    }
+    const oldImage = req.file.path
+    const { name, price, idCategory, idStatus } = req.body
+      const data = {
+        name,
+        price,
+        idCategory,
+        idStatus,
+        image: `http://localhost:3000/uploads/${req.file.filename}`
+      }
     productModel.updateProduct(id, data)
       .then(result => {
         const updatedProduct = result
