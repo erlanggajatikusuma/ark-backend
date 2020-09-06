@@ -6,6 +6,7 @@ const history = {
   getHistories: () => {
     return new Promise((resolve, reject) => {
       const sql = ('SELECT * FROM history')
+      const sql2 = ('SELECT history.*, users.firstName as cashier FROM history JOIN users WHERE history.id = users.id')
       connection.query(sql, (err, result) => {
         if (!err) {
           resolve(result)
@@ -40,7 +41,7 @@ const history = {
   },
   deleteHistory: (id) => {
     return new Promise((resolve, reject) => {
-      const sql = ('DELETE FROM product WHERE id = ?')
+      const sql = ('DELETE FROM history WHERE id = ?')
       connection.query(sql, id, (err, result) => {
         if (!err) {
           resolve(result)

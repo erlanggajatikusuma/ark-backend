@@ -30,13 +30,10 @@ const categories = {
       })
   },
   updateCategory: (req, res) => {
-    const idi = req.params.id
-    const { id, category } = req.body
-    const data = {
-      id,
-      category
-    }
-    categoryModel.updateCategory(idi, data)
+    const id = req.params.id
+    const { category } = req.body
+    const data = {category}
+    categoryModel.updateCategory(id, data)
       .then(result => {
         const updated = result
         console.log(result)

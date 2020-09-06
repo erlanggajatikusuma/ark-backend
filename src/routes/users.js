@@ -1,5 +1,6 @@
 const express = require('express')
-const {register, login} = require('../controller/users')
+const { verifyAccess, isAdmin } = require('../middlewares/auth')
+const {register, login, getAllUser, updateUser, deleteUser, getUserById} = require('../controller/users')
 
 const router = express.Router()
 
@@ -7,5 +8,9 @@ const router = express.Router()
 router
   .post('/register', register)
   .post('/login', login)
+  .get('/',verifyAccess, isAdmin, getAllUser)
+  .get('/:id',verifyAccess,isAdmin, getUserById)
+  .patch('/:id', verifyAccess, isAdmin, updateUser)
+  .delete('/:id', verifyAccess, isAdmin, deleteUser)
 
 module.exports = router

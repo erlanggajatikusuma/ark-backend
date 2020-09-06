@@ -6,30 +6,47 @@
 // connect to model
 const productModel = require('../model/products')
 const responder = require('../response/res')
+const fs = require('fs')
+// const redis = require('redis');
+// const client = redis.createClient(process.env.REDIS_PORT);
+
 
 const products = {
   getAllProduct: (req, res) => {
     const search = req.query.search
     const sort = req.query.sort
-    const page = req.query.page || 1
+    const page = parseInt(req.query.page) || 1
     const limit = req.query.limit || 9
 
-    let result
     if (search) {
-      result = productModel.searchProductName(search)
+      productModel.searchProductName(search)
+            .then(result => {
+                  const resultProduct = result
+                  return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
+                })
     } else if (sort) {
-      result = productModel.sortProduct(sort)
+      productModel.sortProduct(sort)
+            .then(result => {
+              const resultProduct = result
+              return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
+            })
     } else {
-      result = productModel.getAllProduct(page, limit)
-    };
-    result
-      .then(result => {
-        const resultProduct = result
-        responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      productModel.getAllProduct(page, limit)
+                  .then(result => {
+                    const resultProducts = {
+                      prevPage: page - 1,
+                      currentPage: page,
+                      nextPage: page + 1,
+                      perPage: limit,
+                      products: result
+                    }
+                    // client.setex('allproducts',60*60*6, JSON.stringify(resultProducts))
+                    responder.response(res, resultProducts, 200, responder.status.found, null)
+                  })
+                  .catch(err => {
+                    console.log(err)
+                  })
+    }
   },
   getProductById: (req, res) => {
     const id = req.params.id
@@ -39,6 +56,7 @@ const products = {
         if (resultProduct.length === 0) {
           return responder.response(res, resultProduct, 404, 'Data not found')
         }
+        client.setex('product', 60*60*6, JSON.stringify(resultProduct))
         responder.response(res, resultProduct, res.statusCode, responder.status.found)
       })
       .catch(err => {
@@ -46,13 +64,14 @@ const products = {
       })
   },
   insertNewProduct: (req, res) => {
-    const { name, price, idCategory, idStatus, image } = req.body
+    console.log(req.file)
+    const { name, price, idCategory, idStatus } = req.body
     const data = {
       name,
       price,
       idCategory,
       idStatus,
-      image
+      image: `http://localhost:3000/uploads/${req.file.filename}`
     }
     productModel.insertNewProduct(data)
       .then(result => {
@@ -65,15 +84,17 @@ const products = {
       })
   },
   updateProduct: (req, res) => {
+    console.log(req.file)
     const id = req.params.id
-    const { name, price, idCategory, idStatus, image } = req.body
-    const data = {
-      name,
-      price,
-      idCategory,
-      idStatus,
-      image
-    }
+    const oldImage = req.file.path
+    const { name, price, idCategory, idStatus } = req.body
+      const data = {
+        name,
+        price,
+        idCategory,
+        idStatus,
+        image: `http://localhost:3000/uploads/${req.file.filename}`
+      }
     productModel.updateProduct(id, data)
       .then(result => {
         const updatedProduct = result
@@ -89,9 +110,23 @@ const products = {
   },
   deleteProduct: (req, res) => {
     const id = req.params.id
+    productModel.getProductById(id)
+      .then(result => {
+        const resultProduct = result[0].image
+        console.log(resultProduct)
+        // Delete file system
+        const port = 'http://localhost:3000/'
+        const deletePath = resultProduct.replace(port, '')
+        fs.unlinkSync(deletePath, function(err){
+          if(err) throw err
+          console.log('file deleted successfully');
+        });
+      })
     productModel.deleteProduct(id)
       .then(result => {
         const deletedProduct = result
+        // console.log(req.file)
+        
         console.log(deletedProduct);
         if (deletedProduct.affectedRows === 0) {
           return responder.response(res, null, 404, 'Id Not Found')

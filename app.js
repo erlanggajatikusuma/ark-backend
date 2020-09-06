@@ -8,8 +8,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 // Connect ROUTER
-// const productRoute = require('./src/routes/product')
-// const categoryRoute = require('./src/routes/category')
 const routers = require('./src/routes/routers')
 
 // use module
@@ -20,17 +18,15 @@ app.use(cors())
 app.use(morgan('dev'))
 
 // USE ROUTER
-// app.use('/product', productRoute);
-// app.use('/category', categoryRoute);
 app.use('/api/v1', routers)
 
-// Error handling middleware
+// Error handling middleware  (PR)
 // Work
-app.use((req, res, next) => {
-  const error = new Error('Not Found!')
-  error.status = 404
-  next(error)
-})
+// app.use((req, res, next) => {
+//   const error = new Error('Not Found!')
+//   error.status = 404
+//   next(error)
+// })
 
 app.use((error, req, res, next) => {
   res.status(error.status || 500)
@@ -41,5 +37,8 @@ app.use((error, req, res, next) => {
   })
 })
 
-const port = 3000
-app.listen(port, () => { console.log(`server is running on ${port}`) })
+// Static
+app.use('/uploads', express.static('./uploads'))
+
+// const port = 3000
+app.listen(process.env.PORT, () => { console.log(`server is running`) })
