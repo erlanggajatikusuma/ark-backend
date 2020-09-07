@@ -22,7 +22,7 @@ const products = {
   getAllProduct: (page, limit) => {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM product LIMIT ${limit} OFFSET ${(page - 1) * limit}`
-      const sql2 = `SELECT product.*, category.category FROM product INNER JOIN category on product.idCategory LIMIT ${limit} OFFSET ${(page - 1) * limit}`
+      const sql2 = `SELECT product.*, category.category FROM product INNER JOIN category on product.idCategory = category.id LIMIT ${limit} OFFSET ${(page - 1) * limit}`
       connection.query(sql2, (err, result) => {
         if (!err) {
           resolve(result)
@@ -81,7 +81,7 @@ const products = {
   searchProductName: (name) => {
     return new Promise((resolve, reject) => {
       const sql = 'SELECT * FROM product WHERE name LIKE ?'
-      const sql2 = 'SELECT product.*, category.category FROM product INNER JOIN category on product.idCategory WHERE name LIKE ?'
+      const sql2 = 'SELECT product.*, category.category FROM product INNER JOIN category on product.idCategory = category.id WHERE name LIKE ?'
       connection.query(sql2, `%${name}%`, (err, result) => {
         if (!err) {
           resolve(result)
@@ -94,8 +94,8 @@ const products = {
   sortProduct: (sort) => {
     return new Promise((resolve, reject) => {
       const sql = 'SELECT * FROM product ORDER BY ?? ASC'
-      // const sql2 = 'SELECT product.*, category.category FROM product INNER JOIN category on product.idCategory ORDER BY ?? ASC'
-      connection.query(sql, sort, (err, result) => {
+      const sql2 = 'SELECT product.*, category.category FROM product INNER JOIN category on product.idCategory = category.id ORDER BY ?? ASC'
+      connection.query(sql2, sort, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
