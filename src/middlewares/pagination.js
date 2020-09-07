@@ -11,7 +11,9 @@ module.exports = {
             totalData,
             totalPage,
             perPage: limit,
-            currentPage: page
+            currentPage: page,
+            prevPage: page > 1 ? `http://localhost:${process.env.PORT}/api/v1/product?page=${page-1}${req.query.limit?'&limit='+limit:''}`: null,
+            nextPage:  page <  totalPage ?`http://localhost:${process.env.PORT}/api/v1/product?page=${page+1}${req.query.limit?'&limit='+limit:''}`:null
         }
         req.pagination = pagination
         next();
