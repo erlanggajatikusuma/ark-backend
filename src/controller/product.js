@@ -22,31 +22,43 @@ const products = {
       productModel.searchProductName(search)
             .then(result => {
                   const resultProduct = result
+                  console.log(resultProduct)
                   return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
                 })
     } else if (sort) {
       productModel.sortProduct(sort)
             .then(result => {
               const resultProduct = result
-              return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
+              console.log(resultProduct)
+              return responder.response(res, resultProduct, res.statusCode, responder.status.found, null, req.pagination)
             })
     } else {
       productModel.getAllProduct(page, limit)
                   .then(result => {
-                    const resultProducts = {
-                      prevPage: page - 1,
-                      currentPage: page,
-                      nextPage: page + 1,
-                      perPage: limit,
-                      products: result
-                    }
-                    // client.setex('allproducts',60*60*6, JSON.stringify(resultProducts))
-                    responder.response(res, resultProducts, 200, responder.status.found, null)
+                    const resultProducts = result
+                    responder.response(res, resultProducts, 200, responder.status.found, null, req.pagination)
                   })
                   .catch(err => {
                     console.log(err)
                   })
     }
+    // else {
+    //   productModel.getAllProduct(page, limit)
+    //               .then(result => {
+    //                 const resultProducts = {
+    //                   totalPage,
+    //                   prevPage: page - 1,
+    //                   currentPage: page,
+    //                   nextPage: page + 1,
+    //                   perPage: limit,
+    //                   products: result
+    //                 }
+    //                 responder.response(res, resultProducts, 200, responder.status.found, null)
+    //               })
+    //               .catch(err => {
+    //                 console.log(err)
+    //               })
+    // }
   },
   getProductById: (req, res) => {
     const id = req.params.id
