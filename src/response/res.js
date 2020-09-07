@@ -1,6 +1,9 @@
 module.exports = {
-  response: (res, result, status, message, err) => {
+  response: (res, result, status, message, err, pagination) => {
     const output = {}
+    if (pagination) {
+      output.pagination = pagination
+    }
     if (message) {
       output.message = message
     }

@@ -6,6 +6,19 @@
 const connection = require('../config/db')
 
 const products = {
+  countProduct: () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT COUNT(*) AS totalItem FROM product'
+      connection.query(sql, (err, result) => {
+        if(!err) {
+          resolve(result)
+        } else {
+          reject(new Error(err))
+        }
+      })
+
+    })
+  },
   getAllProduct: (page, limit) => {
     return new Promise((resolve, reject) => {
       connection.query(`SELECT * FROM product LIMIT ${limit} OFFSET ${(page - 1) * limit}`, (err, result) => {
