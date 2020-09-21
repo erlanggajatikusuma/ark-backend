@@ -8,7 +8,8 @@ const pagination = require('../middlewares/pagination')
 
 // route endpoints
 router
-  .get('/', auth.verifyAccess, pagination.products, controller.getAllProduct)
+  // .get('/', auth.verifyAccess, pagination.products, controller.getAllProduct)
+  .get('/', pagination.products, controller.getAllProduct)
   .get('/:id', auth.verifyAccess, controller.getProductById)
   .post('/',auth.verifyAccess, auth.isAdmin, multer.upload.single('image'), controller.insertNewProduct)
   .patch('/:id',auth.verifyAccess, auth.isAdmin, multer.upload.single('image'), controller.updateProduct)
