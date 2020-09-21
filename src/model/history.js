@@ -5,10 +5,23 @@ const connection = require('../config/db')
 const history = {
   getHistories: () => {
     return new Promise((resolve, reject) => {
-      const sql = ('SELECT * FROM history')
-      const sql2 = ('SELECT history.*, users.firstName as cashier FROM history JOIN users WHERE history.id = users.id')
-      connection.query(sql, (err, result) => {
+      const sql = 'SELECT * FROM history'
+      const sql2 = 'SELECT id, cashier, invoice, DATE_FORMAT(date, "%e %M %Y") as date, orders, amount FROM history'
+      connection.query(sql2, (err, result) => {
         if (!err) {
+          resolve(result)
+        } else {
+          reject(new Error(err))
+        }
+      })
+    })
+  },
+  getHistoryById: (id) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM history WHERE id = ?'
+      const sql2 = 'SELECT id, cashier, invoice, DATE_FORMAT(date, "%e %M %Y") as date, orders, amount FROM history WHERE id = ?'
+      connection.query(sql2, id, (err, result) => {
+        if(!err) {
           resolve(result)
         } else {
           reject(new Error(err))

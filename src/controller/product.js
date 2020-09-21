@@ -1,15 +1,8 @@
-// controller = req and res to develop, logic pengolahan data
-// menampilkan fungsi callback endpoint di route
-// fungi controller diambil dari model
-// pemanggilan fungsi dari model
-
-// connect to model
 const productModel = require('../model/products')
-const responder = require('../response/res')
+const helper = require('../response/res')
 const fs = require('fs')
 // const redis = require('redis');
 // const client = redis.createClient(process.env.REDIS_PORT);
-
 
 const products = {
   getAllProduct: (req, res) => {
@@ -18,47 +11,31 @@ const products = {
     const page = parseInt(req.query.page) || 1
     const limit = req.query.limit || 9
 
+    // IMPORTANT
     if (search) {
       productModel.searchProductName(search)
             .then(result => {
                   const resultProduct = result
                   console.log(resultProduct)
-                  return responder.response(res, resultProduct, res.statusCode, responder.status.found, null)
+                  return helper.response(res, resultProduct, res.statusCode, helper.status.found, null)
                 })
     } else if (sort) {
       productModel.sortProduct(sort)
             .then(result => {
               const resultProduct = result
               console.log(resultProduct)
-              return responder.response(res, resultProduct, res.statusCode, responder.status.found, null, req.pagination)
+              return helper.response(res, resultProduct, res.statusCode, helper.status.found, null, req.pagination)
             })
     } else {
       productModel.getAllProduct(page, limit)
                   .then(result => {
                     const resultProducts = result
-                    responder.response(res, resultProducts, 200, responder.status.found, null, req.pagination)
+                    helper.response(res, resultProducts, 200, helper.status.found, null, req.pagination)
                   })
                   .catch(err => {
                     console.log(err)
                   })
     }
-    // else {
-    //   productModel.getAllProduct(page, limit)
-    //               .then(result => {
-    //                 const resultProducts = {
-    //                   totalPage,
-    //                   prevPage: page - 1,
-    //                   currentPage: page,
-    //                   nextPage: page + 1,
-    //                   perPage: limit,
-    //                   products: result
-    //                 }
-    //                 responder.response(res, resultProducts, 200, responder.status.found, null)
-    //               })
-    //               .catch(err => {
-    //                 console.log(err)
-    //               })
-    // }
   },
   getProductById: (req, res) => {
     const id = req.params.id
@@ -66,13 +43,13 @@ const products = {
       .then((result) => {
         const resultProduct = result
         if (resultProduct.length === 0) {
-          return responder.response(res, resultProduct, 404, 'Data not found')
+          return helper.response(res, resultProduct, 404, 'Data not found')
         }
-        client.setex('product', 60*60*6, JSON.stringify(resultProduct))
-        responder.response(res, resultProduct, res.statusCode, responder.status.found)
+        // client.setex('product', 60*60*6, JSON.stringify(resultProduct))
+        helper.response(res, resultProduct, res.statusCode, helper.status.found)
       })
       .catch(err => {
-        responder.response(res, [], err.statusCode, null, err)
+        console.log(err)
       })
   },
   insertNewProduct: (req, res) => {
@@ -89,7 +66,7 @@ const products = {
       .then(result => {
         const insertedProduct = result
         console.log(result);
-        responder.response(res, insertedProduct, res.statusCode, responder.status.insert)
+        helper.response(res, insertedProduct, res.statusCode, helper.status.insert)
       })
       .catch(err => {
         console.log(err)
@@ -99,6 +76,7 @@ const products = {
     console.log(req.file)
     const id = req.params.id
     const oldImage = req.file.path
+    const newImage = `http://localhost:3000/uploads/${req.file.filename}`
     const { name, price, idCategory, idStatus } = req.body
       const data = {
         name,
@@ -112,9 +90,9 @@ const products = {
         const updatedProduct = result
         console.log(result)
         if (updatedProduct.affectedRows === 0) {
-          return responder.response(res, null, 404, 'Id Not Found')
+          return helper.response(res, null, 404, 'Id Not Found')
         }
-        responder.response(res, updatedProduct, res.statusCode, responder.status.update)
+        helper.response(res, updatedProduct, res.statusCode, helper.status.update)
       })
       .catch(err => {
         console.log(err)
@@ -141,9 +119,9 @@ const products = {
         
         console.log(deletedProduct);
         if (deletedProduct.affectedRows === 0) {
-          return responder.response(res, null, 404, 'Id Not Found')
+          return helper.response(res, null, 404, 'Id Not Found')
         }
-        responder.response(res, deletedProduct, res.statusCode, responder.status.delete)
+        helper.response(res, deletedProduct, res.statusCode, helper.status.delete)
       })
       .catch(err => {
         console.log(err)

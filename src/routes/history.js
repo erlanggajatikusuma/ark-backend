@@ -8,6 +8,7 @@ const router3 = express.Router()
 
 router3
   .get('/', controllerHistory.getHistories)
+  .get('/:id', controllerHistory.getHistoryById)
   .post('/', controllerHistory.insertHistory)
   .patch('/:id', controllerHistory.updateHistory)
   .delete('/:id', controllerHistory.deleteHistory)

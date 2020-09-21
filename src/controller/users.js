@@ -5,35 +5,41 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     register: (req, res) => {
-        const {firstName, lastName, email, password} = req.body;
-        modelUser.emailExist(email)
-            .then(result => {
-                // console.log(result[0].emailRegistered)
-                if(result[0].emailRegistered > 0) return helper.response(res,{message: 'email already registered'}, 409, null)
-                const data = {
-                    firstName,
-                    lastName,
-                    email,
-                    password,
-                    roleId: 2
-                }
-                bcrypt.genSalt(10, function(err, salt) {
-                    bcrypt.hash(data.password, salt, function(err, hash) {
-                        data.password = hash;
-                        modelUser.register(data)
-                            .then(result => {
-                                const resultData = result;
-                                helper.response(res, resultData, 201, helper.status.insert)
-                            })
-                            .catch(err => {
-                                console.log(err)
-                            })
+        const {firstName, lastName, email, password} = req.body;    
+        const checkEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+        if (!checkEmail) {
+            return helper.response(res, [], 400, ['Invalid Email'])
+        } else if (password.length < 6) {
+            return helper.response(res, [], 400, ['Password min 6 characters'] )
+        } else {
+            modelUser.emailExist(email)
+                .then(result => {
+                    if(result[0].emailRegistered > 0) return helper.response(res, [], 409, ['email already registered'])
+                    const data = {
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                        roleId: 2
+                    }
+                    bcrypt.genSalt(10, function(err, salt) {
+                        bcrypt.hash(data.password, salt, function(err, hash) {
+                            data.password = hash;
+                            modelUser.register(data)
+                                .then(result => {
+                                    const resultData = result;
+                                    helper.response(res, resultData, 201, helper.status.insert)
+                                })
+                                .catch(err => {
+                                    console.log(err)
+                                })
+                        });
                     });
-                });
-            })
-            .catch(err => {
-                console.log(err)
-            })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     },
     login: (req, res) => {
         const {email, password} = req.body;

@@ -10,8 +10,6 @@ module.exports = {
     if (err) {
       output.err = err || null
     }
-    // output.status = !err //'success',
-    // output.success = !err,
     output.statusCode = status,
     output.result = result
     return res.status(status).json(output)

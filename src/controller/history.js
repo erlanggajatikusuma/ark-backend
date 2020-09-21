@@ -13,6 +13,18 @@ const history = {
         console.log(err)
       })
   },
+  getHistoryById: (req, res) => {
+    const id = req.params.id;
+    historyModel.getHistoryById(id)
+      .then(result => {
+        console.log(result)
+        const resHitoryId = result
+        if (resHitoryId.length === 0) {
+          return helper.response(res, resHitoryId, 404, 'Data not found')
+        }
+        helper.response(res, resHitoryId, res.statusCode, helper.status.found)
+      })
+  },
   insertHistory: (req, res) => {
     const { cashier, invoice, orders, amount } = req.body
     const data = {
