@@ -41,37 +41,6 @@ module.exports = {
                 })
         }
     },
-    // Before validation
-    // register: (req, res) => {
-    //     const {firstName, lastName, email, password} = req.body;
-    //     modelUser.emailExist(email)
-    //         .then(result => {
-    //             if(result[0].emailRegistered > 0) return helper.response(res,{message: 'email already registered'}, 409, null)
-    //             const data = {
-    //                 firstName,
-    //                 lastName,
-    //                 email,
-    //                 password,
-    //                 roleId: 2
-    //             }
-    //             bcrypt.genSalt(10, function(err, salt) {
-    //                 bcrypt.hash(data.password, salt, function(err, hash) {
-    //                     data.password = hash;
-    //                     modelUser.register(data)
-    //                         .then(result => {
-    //                             const resultData = result;
-    //                             helper.response(res, resultData, 201, helper.status.insert)
-    //                         })
-    //                         .catch(err => {
-    //                             console.log(err)
-    //                         })
-    //                 });
-    //             });
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //         })
-    // },
     login: (req, res) => {
         const {email, password} = req.body;
         modelUser.getUserEmail(email)

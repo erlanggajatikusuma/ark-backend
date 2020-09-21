@@ -40,5 +40,5 @@ app.use((error, req, res, next) => {
 // Static
 app.use('/uploads', express.static('./uploads'))
 
-// const port = 3000
-app.listen(process.env.PORT, () => { console.log(`server is running`) })
+const port = process.env.PORT
+app.listen(port, () => { console.log(`server is running on ${port}`) })
