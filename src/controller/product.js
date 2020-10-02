@@ -60,7 +60,8 @@ const products = {
       price,
       idCategory,
       idStatus,
-      image: `http://localhost:3000/uploads/${req.file.filename}`
+      // image: `http://localhost:3000/uploads/${req.file.filename}`
+      image: `${process.env.BASE_URL}/uploads/${req.file.filename}`
     }
     productModel.insertNewProduct(data)
       .then(result => {
@@ -75,16 +76,18 @@ const products = {
   updateProduct: (req, res) => {
     console.log(req.file)
     const id = req.params.id
-    const oldImage = req.file.path
     const newImage = `http://localhost:3000/uploads/${req.file.filename}`
     const { name, price, idCategory, idStatus } = req.body
       const data = {
         name,
         price,
         idCategory,
-        idStatus,
-        image: `http://localhost:3000/uploads/${req.file.filename}`
+        idStatus
+        // image: `http://localhost:3000/uploads/${req.file.filename}`
       }
+    if(req.file) {
+      data.image = `${process.env.BASE_URL}/${req.file.path}`
+    }
     productModel.updateProduct(id, data)
       .then(result => {
         const updatedProduct = result
@@ -105,8 +108,7 @@ const products = {
         const resultProduct = result[0].image
         console.log(resultProduct)
         // Delete file system
-        const port = 'http://localhost:3000/'
-        const deletePath = resultProduct.replace(port, '')
+        const deletePath = resultProduct.replace(`${process.env.BASE_URL}/`, '')
         fs.unlinkSync(deletePath, function(err){
           if(err) throw err
           console.log('file deleted successfully');
@@ -115,8 +117,6 @@ const products = {
     productModel.deleteProduct(id)
       .then(result => {
         const deletedProduct = result
-        // console.log(req.file)
-        
         console.log(deletedProduct);
         if (deletedProduct.affectedRows === 0) {
           return helper.response(res, null, 404, 'Id Not Found')
