@@ -1,4 +1,4 @@
-# BackEnd-PaymentApp-ZWallet
+# Arkcafe-Backend
 
 ## Built With
 * [Node.js](https://nodejs.org/en/)
@@ -12,6 +12,22 @@
 ## Installation
 
 Clone this repository and then use the package manager npm to install dependencies.
+
+## Project setup
+
+```
+npm install
+```
+
+### Install nodemon
+
+Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+
+If you have already installed, skip this step.
+
+```
+npm install -g nodemon
+```
 
 ## Setup .env example
 
