@@ -49,3 +49,9 @@ SECRET_KEY = "your secret key"
 npm run dev
 ```
 
+### Admin (for full access)
+```
+email: akbar@gmail.com
+password: akbar1234
+```
+
