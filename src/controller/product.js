@@ -81,7 +81,6 @@ const products = {
         price,
         idCategory,
         idStatus
-        // image: `http://localhost:3000/uploads/${req.file.filename}`
       }
     if(req.file) {
       productModel.getProductById(id)
