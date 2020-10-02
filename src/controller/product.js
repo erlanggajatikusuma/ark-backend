@@ -60,7 +60,6 @@ const products = {
       price,
       idCategory,
       idStatus,
-      // image: `http://localhost:3000/uploads/${req.file.filename}`
       image: `${process.env.BASE_URL}/uploads/${req.file.filename}`
     }
     productModel.insertNewProduct(data)
@@ -76,7 +75,6 @@ const products = {
   updateProduct: (req, res) => {
     console.log(req.file)
     const id = req.params.id
-    const newImage = `http://localhost:3000/uploads/${req.file.filename}`
     const { name, price, idCategory, idStatus } = req.body
       const data = {
         name,
@@ -86,6 +84,13 @@ const products = {
         // image: `http://localhost:3000/uploads/${req.file.filename}`
       }
     if(req.file) {
+      productModel.getProductById(id)
+        .then(result => {
+          const updated = result[0].image;
+          console.log(updated)
+          const replacePath = updated.replace(`${process.env.BASE_URL}/`, '');
+          fs.unlinkSync(replacePath)
+        })
       data.image = `${process.env.BASE_URL}/${req.file.path}`
     }
     productModel.updateProduct(id, data)
