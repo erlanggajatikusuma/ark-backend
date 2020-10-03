@@ -8,9 +8,11 @@ module.exports = {
         const {firstName, lastName, email, password} = req.body;    
         const checkEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
         if (!checkEmail) {
-            return helper.response(res, [], 400, ['Invalid Email'])
+            return helper.response(res, [], 403, ['Invalid Email'])
         } else if (password.length < 6) {
-            return helper.response(res, [], 400, ['Password min 6 characters'] )
+            return helper.response(res, [], 411, ['Password min 6 characters'] )
+        } else if (firstName.length && lastName.length < 3) {
+            return helper.response(res, [], 400, ['Name cannot be empty'])
         } else {
             modelUser.emailExist(email)
                 .then(result => {
