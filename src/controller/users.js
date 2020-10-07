@@ -62,7 +62,7 @@ module.exports = {
                             email: user.email,
                             roleId: user.roleId
                         }
-                        jwt.sign(payload, process.env.KEY_TOKEN, { expiresIn: '1h' }, (err, token) => {
+                        jwt.sign(payload, process.env.KEY_TOKEN, { expiresIn: '12h' }, (err, token) => {
                             user.token = token
                             
                             delete user.password
@@ -88,12 +88,11 @@ module.exports = {
     },
     updateUser: (req, res) => {
         const id = req.params.id
-        const { firstName, lastName, roleId, email } = req.body
+        const { firstName, lastName, roleId } = req.body
         const data = {
             firstName,
             lastName,
-            roleId,
-            email
+            roleId
         }
         modelUser.updateUser(id, data)
             .then(result => {

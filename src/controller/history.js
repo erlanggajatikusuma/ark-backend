@@ -4,10 +4,12 @@ const helper = require('../response/res')
 
 const history = {
   getHistories: (req, res) => {
-    historyModel.getHistories()
+    const page = parseInt(req.query.page) || 1
+    const limit = req.query.limit || 9
+    historyModel.getHistories(page, limit)
       .then(result => {
         const output = result
-        helper.response(res, output, res.statusCode, helper.status.found )
+        helper.response(res, output, res.statusCode, helper.status.found, null, req.pagination )
       })
       .catch(err => {
         console.log(err)

@@ -3,11 +3,23 @@
 const connection = require('../config/db')
 
 const history = {
-  getHistories: () => {
+  countHistory: () => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM history'
-      const sql2 = 'SELECT id, cashier, invoice, DATE_FORMAT(date, "%e %M %Y") as date, orders, amount FROM history'
-      connection.query(sql2, (err, result) => {
+      const sql = 'SELECT COUNT(*) AS totalItem FROM history'
+      connection.query(sql, (err, result) => {
+        if(!err) {
+          resolve(result)
+        } else {
+          reject(new Error(err))
+        }
+      })
+
+    })
+  },
+  getHistories: (page, limit) => {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT id, cashier, invoice, DATE_FORMAT(date, "%e %M %Y") as date, orders, amount FROM history LIMIT ${limit} OFFSET ${(page - 1) * limit}`
+      connection.query(sql, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -18,9 +30,8 @@ const history = {
   },
   getHistoryById: (id) => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM history WHERE id = ?'
-      const sql2 = 'SELECT id, cashier, invoice, DATE_FORMAT(date, "%e %M %Y") as date, orders, amount FROM history WHERE id = ?'
-      connection.query(sql2, id, (err, result) => {
+      const sql = 'SELECT id, cashier, invoice, DATE_FORMAT(date, "%e %M %Y") as date, orders, amount FROM history WHERE id = ?'
+      connection.query(sql, id, (err, result) => {
         if(!err) {
           resolve(result)
         } else {
