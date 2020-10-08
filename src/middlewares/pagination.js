@@ -13,8 +13,10 @@ module.exports = {
             totalPage,
             perPage: limit,
             currentPage: page,
-            prevPage: page > 1 ? `http://localhost:${process.env.PORT}/api/v1/product?page=${page-1}${req.query.limit?'&limit='+limit:''}`: null,
-            nextPage:  page <  totalPage ?`http://localhost:${process.env.PORT}/api/v1/product?page=${page+1}${req.query.limit?'&limit='+limit:''}`:null
+            // prevPage: page > 1 ? `http://localhost:${process.env.PORT}/api/v1/product?page=${page-1}${req.query.limit?'&limit='+limit:''}`: null,
+            prevPage: page > 1 ? `${process.env.BASE_URL}/api/v1/product?page=${page-1}${req.query.limit?'&limit='+limit:''}`: null,
+            // nextPage:  page <  totalPage ?`http://localhost:${process.env.PORT}/api/v1/product?page=${page+1}${req.query.limit?'&limit='+limit:''}`:null
+            nextPage:  page <  totalPage ?`${process.env.BASE_URL}/api/v1/product?page=${page+1}${req.query.limit?'&limit='+limit:''}`:null
         }
         req.pagination = pagination
         next();
