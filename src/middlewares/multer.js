@@ -1,4 +1,5 @@
 const multer = require('multer');
+const helper = require('../response/res')
 
 
 const storage = multer.diskStorage({
@@ -18,8 +19,16 @@ const fileFilter = (req, file, cb) => {
       cb(null, false);
     }
   }
-   
-upload = multer({ 
+
+
+// upload = multer({ 
+//     storage: storage,
+//     fileFilter: fileFilter,
+//     limits: {
+//       fileSize: 1024 * 1024 * 2
+//     }
+//  })
+const imageSize = multer({ 
     storage: storage,
     fileFilter: fileFilter,
     limits: {
@@ -27,7 +36,20 @@ upload = multer({
     }
  })
 
+const upload = multer(imageSize).single('image')
+
+const uploadFile = (req, res, next) => {
+  upload(req, res, function(error) {
+    if (error) {
+      if (error.message === 'File too large') return helper.response(res, [], 400, null, 'Max file 2MB')
+    } else {
+      next ()
+    }
+  })
+}
+
 module.exports = {
-    upload
+    // upload
+    uploadFile
 }
 

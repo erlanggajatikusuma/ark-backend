@@ -95,7 +95,6 @@ const products = {
     productModel.updateProduct(id, data)
       .then(result => {
         const updatedProduct = result
-        console.log(result)
         if (updatedProduct.affectedRows === 0) {
           return helper.response(res, null, 404, 'Id Not Found')
         }
