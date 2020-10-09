@@ -85,7 +85,7 @@ const products = {
     if(req.file) {
       console.log(req.file)
       if(req.file.size > 1024 * 1024 * 2) {
-        return helper.response(res, null, 403, 'max file 2mb')
+        return helper.response(res, null, 413, 'max file 2mb')
       }
       productModel.getProductById(id)
         .then(result => {
