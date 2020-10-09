@@ -21,35 +21,35 @@ const fileFilter = (req, file, cb) => {
   }
 
 
-// upload = multer({ 
+upload = multer({ 
+    storage: storage,
+    fileFilter: fileFilter,
+    // limits: {
+    //   fileSize: 1024 * 1024 * 2
+    // }
+ })
+// const imageSize = multer({ 
 //     storage: storage,
 //     fileFilter: fileFilter,
 //     limits: {
-//       fileSize: 1024 * 1024 * 2
+//       fileSize: 2 * 1024 * 1024
 //     }
 //  })
-const imageSize = multer({ 
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: {
-      fileSize: 1024 * 1024 * 2
-    }
- })
 
-const upload = multer(imageSize).single('image')
+// const upload = multer(imageSize).single('image')
 
-const uploadFile = (req, res, next) => {
-  upload(req, res, function(error) {
-    if (error) {
-      if (error.message === 'File too large') return helper.response(res, [], 400, null, 'Max file 2MB')
-    } else {
-      next ()
-    }
-  })
-}
+// const uploadFile = (req, res, next) => {
+//   upload(req, res, function(error) {
+//     if (error) {
+//       if (error.code === 'LIMIT_FILE_SIZE') return helper.response(res, [], 400, null, 'Max file 2MB')
+//     } else {
+//       next ()
+//     }
+//   })
+// }
 
 module.exports = {
-    // upload
-    uploadFile
+    upload
+    // uploadFile
 }
 
