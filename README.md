@@ -41,6 +41,7 @@ DB_PASSWORD = "your database password" || '' (default)
 DB_DATABASE = arkcafe
 PORT = "your port"
 SECRET_KEY = "your secret key"
+BASE_URL = http://localhost:"YOUR PORT"
 
 ```
 
